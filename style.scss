@@ -1,0 +1,210 @@
+
+
+
+$height: 427px;
+$width: 320px;
+
+$light-blue: #B3C0A4    ;
+$dark-blue: #ABB670;
+
+$background-color: #325277; // 新的背景顏色
+$meteor-color: #FFDC35; // 新的流星顏色
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+
+body {
+  background-color: $background-color !important; // 修改背景色為 #325277
+  font-family: 'Open Sans', sans-serif;
+}
+
+div.business-card {
+  height: $height;
+  width: $width;
+  margin-left: $width / -2;
+  margin-top: $height / -2;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  perspective: 1000;
+  z-index: 10; // 將卡片的圖層提高到流星之上
+
+  &:hover .flipper, &.hover .flipper {
+    transform: rotateY(180deg) rotateZ(90deg);
+  }
+}
+
+div.flipper {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+
+  position: relative;
+  transform-origin: center $width / 2;
+}
+
+div.front, div.back {
+  backface-visibility: hidden;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: $height;
+  width: $width;
+
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.75);
+}
+
+div.front {
+  background-color: white;
+  z-index: 0;
+
+  &:before, &:after {
+    display: block;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-width: $width / 2;
+    border-style: solid;
+    border-color: transparent;
+  }
+
+  &:before {
+    border-top-color: $light-blue;
+    border-left-color: $light-blue;
+    z-index: 2;
+  }
+
+  &:after {
+    border-top-color: $dark-blue;
+    border-right-color: $dark-blue;
+  }
+
+  div.name {
+    position: absolute;
+    bottom: ($height - $width - 90) / 2;
+    left: ($width - 150px) / 2;
+
+    span {
+      display: block;
+      font-size: 40px;
+      line-height: 45px;
+    }
+
+    span.first {
+      color: $dark-blue;
+    }
+
+    span.last {
+      color: $light-blue;
+      font-size: 20px; // 原本是 40px，縮小 10px
+    }
+
+    span.title {
+      font-size: 20px;
+      line-height: 20px;
+    }
+  }
+}
+
+div.back {
+  background-color: #a1c9ea !important; // 設定為新的淡粉色
+  color: rgb(163, 88, 88);
+  width: $height;
+  height: $width;
+  box-sizing: border-box;
+  transform: rotateY(180deg) rotateZ(90deg);
+
+  div.container-sm {
+    float: left;
+    width: 40%;
+    height: 100%;
+    position: relative;
+  }
+
+  div.container-lg {
+    float: left;
+    width: 60%;
+    margin-top: 2rem;
+  }
+
+  figure.logo-white {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    display: block;
+    margin: -60px -60px;
+
+    &:before, &:after {
+      display: block;
+      content: '';
+      position: absolute;
+      border-style: solid;
+      border-color: transparent;
+    }
+
+    &:before {
+      top: 0;
+      left: 0;
+      border-width: 60px;
+      border-top-color: white;
+      border-left-color: white;
+      z-index: 2;
+    }
+
+    &:after {
+      bottom: 0;
+      right: 0;
+      border-width: 56px;
+      border-right-color: white;
+    }
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+    display: block;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  ul.social {
+    font-size: 1.25rem;
+
+    li {
+      margin-top: 1rem;
+
+      &:first-child {
+        margin-top: 2rem;
+      }
+    }
+  }
+}
+
+// 流星樣式
+.meteor {
+  position: absolute;
+  width: 5px;
+  height: 20px;
+  background: linear-gradient(45deg, $meteor-color, rgba(255, 255, 255, 0));
+  border-radius: 50%;
+  pointer-events: none;
+  animation: fall 2s linear infinite;
+  z-index: 1; // 確保流星在卡片下方
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100px) translateX(0) rotate(45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(100px) rotate(45deg);
+    opacity: 0;
+  }
+}

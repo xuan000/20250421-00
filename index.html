@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>範例2</title>
+    <link rel="stylesheet" href="dist/style.css">
+    <!-- 加載 Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #325277; /* 恢復原來的背景顏色 */
+        }
+
+        /* 月亮樣式 */
+        .moon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, #DDD 50%, #FFD700 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 255, 200, 0.8);
+            z-index: 1;
+        }
+
+        /* 雲朵樣式 */
+        .cloud {
+            position: absolute;
+            background: #F3F3FA;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            animation: moveClouds 30s linear infinite;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: #F3F3FA;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .cloud::before {
+            width: 150px;
+            height: 80px;
+            top: -40px;
+            left: 20px;
+        }
+
+        .cloud::after {
+            width: 120px;
+            height: 60px;
+            top: 20px;
+            left: 100px;
+        }
+
+        .cloud1 {
+            width: 200px;
+            height: 100px;
+            top: 50px;
+            left: -250px;
+            animation-duration: 30s;
+        }
+
+        .cloud2 {
+            width: 250px;
+            height: 120px;
+            top: 150px;
+            left: -300px;
+            animation-duration: 40s;
+        }
+
+        .cloud3 {
+            width: 180px;
+            height: 90px;
+            top: 250px;
+            left: -200px;
+            animation-duration: 35s;
+        }
+
+        @keyframes moveClouds {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(120vw);
+            }
+        }
+
+        /* 流星樣式 */
+        .meteor {
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(to bottom, #FFDC35, rgba(255, 255, 255, 0));
+            border-radius: 2px;
+            pointer-events: none;
+            animation: fall 2s linear infinite;
+            box-shadow: 0 0 10px #FFDC35, 0 0 20px #FFDC35, 0 0 30px rgba(255, 220, 53, 0.5);
+            z-index: 3;
+        }
+
+        /* 雨滴樣式 */
+        .raindrop {
+            background: #C4E1FF; /* 雨滴顏色 */
+            box-shadow: none; /* 移除流星的光暈效果 */
+            animation: fallRain 2s linear infinite; /* 使用新的動畫 */
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translate(100vw, -20vh) rotate(45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-20vw, 120vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fallRain {
+            0% {
+                transform: translateY(-20vh); /* 垂直落下 */
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(120vh); /* 垂直落下 */
+                opacity: 0;
+            }
+        }
+
+        /* 名片樣式 */
+        .business-card {
+            position: absolute;
+            top: 75%; /* 往下移一半 */
+            left: 50%;
+            transform: translate(-50%, -50%); /* 確保名片居中 */
+            perspective: 1000px;
+            z-index: 10;
+        }
+
+        .flipper {
+            transition: 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .front, .back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 320px;
+            height: 427px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.75);
+        }
+
+        .front {
+            background-color: white;
+        }
+
+        .back {
+            background-color: #a1c9ea;
+            color: #a35858;
+        }
+
+        /* 子選單樣式 */
+        .dropdown {
+            position: relative; /* 父元素設置為相對定位 */
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%; /* 子選單顯示在父元素下方 */
+            left: 0;
+            width: 150px; /* 子選單寬度 */
+            max-height: 200px; /* 設置最大高度，超出部分可滾動 */
+            background-color: rgba(128, 128, 128, 0.8); /* 灰色半透明 */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            z-index: 100;
+            overflow-y: auto; /* 啟用垂直滾動條 */
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block; /* 滑鼠懸停時顯示子選單 */
+        }
+
+        .dropdown-menu a {
+            text-decoration: none;
+            color: #000;
+            padding: 5px 10px; /* 調整內距，確保文字不會超出 */
+            font-size: 0.9rem; /* 縮小字體大小 */
+            display: block;
+            width: 100%; /* 每個選項占子選單寬度的全部 */
+            box-sizing: border-box; /* 確保內距不影響寬度 */
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #ddd; /* 滑鼠懸停時的背景顏色 */
+        }
+    </style>
+</head>
+<body>
+  <!-- 月亮 -->
+  <div class="moon"></div>
+
+  <!-- 雲朵 -->
+  <div class="cloud cloud1"></div>
+  <div class="cloud cloud2"></div>
+  <div class="cloud cloud3"></div>
+
+  <!-- 名片 -->
+  <div class="business-card" ontouchstart="this.classList.toggle('hover');">
+    <div class="flipper">
+        <div class="front">
+            <div class="name">
+                <span class="first">淡江大學</span> 
+                <span class="last">教育科技學系</span>
+                <span class="title">TKUET</span>
+            </div>
+        </div>
+        <div class="back">
+            <div class="container-sm">
+                <figure class="logo-white"></figure>
+            </div>
+            <div class="container-lg">
+                <ul class="social fa-ul">
+                    <li><i class="fa fa-li fa-globe"></i><a href="https://www.tku.edu.tw/">淡江大學</a></li>
+                    <li><i class="fa fa-li fa-envelope"></i><a href="https://www.et.tku.edu.tw/">教育科技學系</a></li>
+                    <li class="dropdown">
+                        <i class="fa fa-li fa-github"></i>
+                        <a href="#">作品集</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="https://hackmd.io/@BgTVfNivRwyX4-gSysqRBw/SJwB-cA0ye">HackMD</a></li>
+                            <li><a href="https://xuan000.github.io/20250225/">2/25作業</a></li>
+                            <li><a href="https://zzzss00.github.io/20250304.01/">3/4作業</a></li>
+                            <li><a href="https://xuan000.github.io/20250318/">3/18作業</a></li>
+                            <li><a href="https://xuan000.github.io/20250325/">3/25作業</a></li>
+                            <li><a href="https://xuan000.github.io/20250408/">4/8作業</a></li>
+                            <li><a href="http://127.0.0.1:5501/index.html">期中作業</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    const createMeteors = () => {
+        const meteorCount = 50;
+        for (let i = 0; i < meteorCount; i++) {
+            const meteor = document.createElement('div');
+            meteor.classList.add('meteor');
+            meteor.style.left = `${Math.random() * window.innerWidth}px`;
+            meteor.style.top = `${Math.random() * -200}px`;
+            meteor.style.animationDelay = `${Math.random() * 2}s`;
+            document.body.appendChild(meteor);
+        }
+    };
+
+    // 初始化流星
+    createMeteors();
+
+    // 控制流星變為雨滴
+    const businessCard = document.querySelector('.business-card');
+    const meteors = document.querySelectorAll('.meteor');
+
+    const changeToRain = () => {
+        meteors.forEach(meteor => {
+            meteor.classList.add('raindrop');
+        });
+    };
+
+    const changeToMeteor = () => {
+        meteors.forEach(meteor => {
+            meteor.classList.remove('raindrop');
+        });
+    };
+
+    businessCard.addEventListener('mouseenter', changeToRain);
+    businessCard.addEventListener('mouseleave', changeToMeteor);
+  </script>
+</body>
+</html>
